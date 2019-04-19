@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.4.17)  19 APR 2019 17:50
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.4.17)  19 APR 2019 23:06
 entering extended mode
 **./reportLatest.tex
 (reportLatest.tex
@@ -280,19 +280,19 @@ Document Style - pseudocode environments for use with the `algorithmicx' style
 ) (reportLatest.aux)
 \openout1 = `reportLatest.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 70.
-LaTeX Font Info:    ... okay on input line 70.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 70.
-LaTeX Font Info:    ... okay on input line 70.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 70.
-LaTeX Font Info:    ... okay on input line 70.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 70.
-LaTeX Font Info:    ... okay on input line 70.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 70.
-LaTeX Font Info:    ... okay on input line 70.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 70.
-LaTeX Font Info:    ... okay on input line 70.
-LaTeX Font Info:    Try loading font information for OT1+ptm on input line 70.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 71.
+LaTeX Font Info:    ... okay on input line 71.
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 71.
 
 ("C:\Users\lywjoel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/psnfss\ot1ptm.fd
 "
@@ -375,29 +375,29 @@ Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: float package is loaded.
 Package caption Info: End \AtBeginDocument code.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 72.
-LaTeX Font Info:    Try loading font information for OT1+ztmcm on input line 72
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 73.
+LaTeX Font Info:    Try loading font information for OT1+ztmcm on input line 73
 .
 
 ("C:\Users\lywjoel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/psnfss\ot1ztmcm.
 fd"
 File: ot1ztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OT1/ztmcm.
 )
-LaTeX Font Info:    Try loading font information for OML+ztmcm on input line 72
+LaTeX Font Info:    Try loading font information for OML+ztmcm on input line 73
 .
 
 ("C:\Users\lywjoel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/psnfss\omlztmcm.
 fd"
 File: omlztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OML/ztmcm.
 )
-LaTeX Font Info:    Try loading font information for OMS+ztmcm on input line 72
+LaTeX Font Info:    Try loading font information for OMS+ztmcm on input line 73
 .
 
 ("C:\Users\lywjoel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/psnfss\omsztmcm.
 fd"
 File: omsztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OMS/ztmcm.
 )
-LaTeX Font Info:    Try loading font information for OMX+ztmcm on input line 72
+LaTeX Font Info:    Try loading font information for OMX+ztmcm on input line 73
 .
 
 ("C:\Users\lywjoel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/psnfss\omxztmcm.
@@ -405,32 +405,34 @@ fd"
 File: omxztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OMX/ztmcm.
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 72.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 73.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 72.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 73.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 72.
-LaTeX Font Info:    Try loading font information for OMS+ptm on input line 81.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 73.
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 73.
 
 ("C:\Users\lywjoel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/psnfss\omsptm.fd
 "
 File: omsptm.fd 
 )
+LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <12> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 73.
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 81.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 82.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 90.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 91.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 90.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 91.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 90.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 91.
 <WinningProb.PNG, id=1, 784.64572pt x 350.59554pt>
 File: WinningProb.PNG Graphic file (type png)
 <use WinningProb.PNG>
-Package pdftex.def Info: WinningProb.PNG  used on input line 99.
+Package pdftex.def Info: WinningProb.PNG  used on input line 100.
 (pdftex.def)             Requested size: 243.91125pt x 108.98306pt.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10.95> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 122.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 123.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
@@ -441,21 +443,17 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
  <./WinningProb.PNG>]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 182.
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 165.
+ [2]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <10.95> not available
-(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 216.
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 227.
 
-Underfull \hbox (badness 1248) in paragraph at lines 218--219
+Underfull \hbox (badness 1248) in paragraph at lines 229--230
 \OT1/ptm/m/n/10 We in-tro-duce a tech-nique sim-i-lar to the Av-er-age Rank
  []
 
-[2]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <5> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 233.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 244.
 [3] (reportLatest.bbl
 Underfull \hbox (badness 7504) in paragraph at lines 18--21
 []\OT1/ptm/m/n/10 Stuart J. Rus-sell and Pe-ter
@@ -466,33 +464,30 @@ Underfull \hbox (badness 6559) in paragraph at lines 24--29
 []\OT1/ptm/m/n/10 Tom Schaul, John Quan, Ioan-nis
  []
 
-) [4
-
-] (reportLatest.aux) ) 
+) [4] (reportLatest.aux) ) 
 Here is how much of TeX's memory you used:
- 4984 strings out of 492945
- 76083 string characters out of 3125364
- 161733 words of memory out of 3000000
- 8776 multiletter control sequences out of 15000+200000
- 46842 words of font info for 94 fonts, out of 3000000 for 9000
+ 4990 strings out of 492945
+ 76168 string characters out of 3125364
+ 159781 words of memory out of 3000000
+ 8782 multiletter control sequences out of 15000+200000
+ 47099 words of font info for 95 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  41i,11n,39p,1022b,391s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/Users/lywjoel/AppData/Local/Programs/MiKTeX 2.9/fonts
-/enc/dvips/base/8r.enc}<C:/Users/lywjoel/AppData/Local/Programs/MiKTeX 2.9/font
-s/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/lywjoel/AppData/Local/Programs/
-MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/lywjoel/AppData/
-Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/ly
-wjoel/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.p
-fb><C:/Users/lywjoel/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/urw/symbol/u
-syr.pfb><C:/Users/lywjoel/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/urw/sym
-bol/usyr.pfb><C:/Users/lywjoel/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/ur
-w/times/utmb8a.pfb><C:/Users/lywjoel/AppData/Local/Programs/MiKTeX 2.9/fonts/ty
-pe1/urw/times/utmbi8a.pfb><C:/Users/lywjoel/AppData/Local/Programs/MiKTeX 2.9/f
-onts/type1/urw/times/utmr8a.pfb><C:/Users/lywjoel/AppData/Local/Programs/MiKTeX
- 2.9/fonts/type1/urw/times/utmri8a.pfb>
-Output written on reportLatest.pdf (4 pages, 718253 bytes).
+{C:/Users/lywjoel/AppData/Local/Programs/MiKTeX 2.9/f
+onts/enc/dvips/base/8r.enc}<C:/Users/lywjoel/AppData/Local/Programs/MiKTeX 2.9/
+fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/lywjoel/AppData/Local/Progr
+ams/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/lywjoel/AppD
+ata/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/User
+s/lywjoel/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy
+10.pfb><C:/Users/lywjoel/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/urw/symb
+ol/usyr.pfb><C:/Users/lywjoel/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/urw
+/times/utmb8a.pfb><C:/Users/lywjoel/AppData/Local/Programs/MiKTeX 2.9/fonts/typ
+e1/urw/times/utmbi8a.pfb><C:/Users/lywjoel/AppData/Local/Programs/MiKTeX 2.9/fo
+nts/type1/urw/times/utmr8a.pfb><C:/Users/lywjoel/AppData/Local/Programs/MiKTeX 
+2.9/fonts/type1/urw/times/utmri8a.pfb>
+Output written on reportLatest.pdf (4 pages, 721490 bytes).
 PDF statistics:
- 59 PDF objects out of 1000 (max. 8388607)
+ 55 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  6 words of extra memory for PDF output out of 10000 (max. 10000000)
 
