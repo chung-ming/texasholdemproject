@@ -37,19 +37,30 @@ class QTable:
             tmp = tmp[attrs[attr]]
         prev[key] = val
 
-    def recursiveTrace(self, n, item):
-        if n == 0:
-            return [", ".join(list(map(str, item)))]
-        keys = []
-        for i in item:
-            tmp = self.recursiveTrace(n - 1, item[i])
-            for j in tmp:
-                keys.append(str(i) + ", " + j)
-        return keys
+
+
+    def get_size(self):
+        def recursiveTrace(n, item):
+            if n == 0:
+                return 1
+            c = 0
+            for i in item:
+                c += recursiveTrace(n - 1, item[i])
+            return c
+        return recursiveTrace(len(self.attrList), self.table)
 
     def aslist(self):
+        def recursiveTrace(n, item):
+            if n == 0:
+                return [", ".join(list(map(str, item)))]
+            keys = []
+            for i in item:
+                tmp = recursiveTrace(n - 1, item[i])
+                for j in tmp:
+                    keys.append(str(i) + ", " + j)
+            return keys
         # return str(self.table)
-        return self.recursiveTrace(len(self.attrList), self.table)
+        return recursiveTrace(len(self.attrList), self.table)
 
     def format(self):
         return "\n".join(self.aslist())
@@ -61,7 +72,7 @@ class QTable:
         f = open(filename)
         for line in f:
             street, ehs, pot, action, q, n = line.strip().split(", ")
-            print("read: ", street, ehs, pot, action, q, n)
+            # print("read: ", street, ehs, pot, action, q, n)
             self.set({
                 'street': street,
                 'ehs': ehs,
@@ -73,13 +84,13 @@ class QTable:
         f = open(filename, 'w')
         f.write(self.format())
         f.close()
-
-qt = QTable()
-qt.set({
-    'street': 'flop',
-    'ehs': '0.54',
-    'pot': '3',
-    'action': 'call'
-}, [3, 12])
-
-print(qt.aslist())
+#
+# qt = QTable()
+# qt.set({
+#     'street': 'flop',
+#     'ehs': '0.54',
+#     'pot': '3',
+#     'action': 'call'
+# }, [3, 12])
+#
+# print(qt.aslist())

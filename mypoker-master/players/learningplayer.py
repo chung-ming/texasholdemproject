@@ -17,12 +17,13 @@ class LearningPlayer(BasePokerPlayer):
         self.gameHistory = []
         self.qtable = qtable.QTable()
         self.table = {}
-        self.epsilon = 0.1
+        self.epsilon = 0.15
         self.learn_factor = 0.05
-        self.discount_factor = 0.5
+        self.discount_factor = 0.8
         self.bb = 0
         self.unseen_hands = 0
         self.unseen_states = 0
+        self.seen_states = 0
         self.num_rounds_this_game = 0
         self.log_level = log_level
         streets = ['preflop', 'flop', 'turn', 'river']
@@ -152,41 +153,55 @@ class LearningPlayer(BasePokerPlayer):
         opp_playstyle = self.get_opponent_play_style()
         self_raises = self.self_raises
         action = ''
+        choices = []
+        decision = ''
 
         # Use q-table with epsilon-greedy algo to determine action
-        if rand.random() < self.epsilon:
-            action = valid_actions[round(rand.random() * (len(valid_actions) - 1))]['action']
-            self.log("random action: {}".format(action), 1)
+        actions = [
+            'fold', 'call', 'raise'
+        ]
+
+        state = {
+            'street': street,
+            'ehs': str(round(ehs, 3)),
+            'pot': str(pot)
+        }
+
+        choices = list(map(lambda act: [act, self.get_table({
+            'street': street,
+            'ehs': str(round(ehs, 3)),
+            'pot': str(pot),
+            'action': act
+        })[0]], actions))
+
+        best = None
+        bestVal = float('-inf')
+        found = False
+        for c in choices:
+            if c[0] and c[1] and float(c[1]) > bestVal:
+                best = c[0]
+                bestVal = float(c[1])
+                found = True
+
+        if not found:
+            self.unseen_states += 1
+            # print(self.unseen_states, state)
         else:
+            self.seen_states += 1
+
+        r = rand.random()
+        if r < self.epsilon:
             found = False
-            actions = [
-                'fold', 'call', 'raise'
-            ]
 
-            actions = list(map(lambda act: [act, self.get_table({
-                    'street': street,
-                    'ehs': str(round(ehs, 3)),
-                    'pot': str(pot),
-                    'action': act
-                })[0]], actions))
-
-            best = None
-            bestVal = float('-inf')
-            for c in actions:
-                if c[0] and c[1] and float(c[1]) > bestVal:
-                    best = c[0]
-                    bestVal = float(c[1])
-                    found = True
-
-            found = False
-            if not found:
-                # print("bye")
-                self.unseen_states += 1
-                action = valid_actions[round(rand.random() * (len(valid_actions) - 1))]['action']
-                self.log("random action: {}".format(action), 1)
-            else:
-                self.log("Best: {}".format(best), 1)
-                action = best
+        if not found:
+            self.log("Unseen: {}".format(action), 1)
+            action = valid_actions[round(rand.random() * (len(valid_actions) - 2)) + 1]['action']
+            self.log("random action: {}".format(action), 1)
+            decision = 'rand'
+        else:
+            self.log("Best: {}".format(best), 1)
+            action = best
+            decision = 'best'
 
         if action == 'raise':
             self.self_raises += 1
@@ -199,8 +214,10 @@ class LearningPlayer(BasePokerPlayer):
             'ehs': str(ehs),
             'action': action,
             'opp_playstyle': self.get_opponent_play_style(),
+            'choices': choices,
             'valid_actions': valid_actions,
-            'self_raises': self.self_raises
+            'self_raises': self.self_raises,
+            'decision': decision
         })
         return action  # action returned here is sent to the poker engine
 
@@ -246,13 +263,14 @@ class LearningPlayer(BasePokerPlayer):
                 'action': action['action']
             }, self.discount_factor**distance * reward)
 
-        self.gameHistory.append({
-            'action_history': self.actionHistory,
-            'result': winners[0],
-            'pot': round_state['pot']['main']['amount'],
-            'self_stack': round_state['seats'][0],
-            'opp_stack': round_state['seats'][1]
-        })
+        if (self.log_level >= 1):
+            self.gameHistory.append({
+                'action_history': self.actionHistory,
+                'result': winners[0],
+                'pot': round_state['pot']['main']['amount'],
+                'self_stack': round_state['seats'][0],
+                'opp_stack': round_state['seats'][1]
+            })
         self.self_raises = 0
         self.actionHistory = []
         pass
