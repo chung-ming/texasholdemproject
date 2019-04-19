@@ -1,3 +1,7 @@
 
 venv/*
 .idea/workspace.xml
+.idea/other.xml
+.idea/texasholdemproject.iml
+
+\.idea/

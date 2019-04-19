@@ -50,7 +50,7 @@
 % page charge instructions.
 % Put where the files are available in the appropriate places.
 
-\title{Poker Project - Team 07}
+\title{Designing an Artificial Intelligence Poker Agent with Q-Learning}
 
 
 % Multiple author syntax (remove the single-author syntax above and the \iffalse ... \fi here)
@@ -59,8 +59,9 @@
 Arielyte Tsen Chung Ming, Devarajan Preethi, James Pang Mun Wai, Lee Yi Wei Joel, Yip Seng Yuen
 \\ 
 National University of Singapore\\
+CS3243 AY18/19 Semester 2 Team 07\\
 %
-chungming.tsen@u.nus.edu, e0203237@u.nus.edu, jamespang@nus.edu, lywjoel@u.nus.edu, yip@u.nus.edu
+\{chungming.tsen, preethi\_devarajan, jamespang, lywjoel, yip\}@u.nus.edu
 }
 % If your authors do not fit in the default space, you can increase it 
 % by uncommenting the following (adjust the "2.5in" size to make it fit
@@ -78,12 +79,13 @@ The game of poker has long been a field of interest for artificial intelligence 
 This paper outlines our design of an AI poker agent for Heads Up Limit Texas Hold’em, which aims to respond competently and accurately with limited information, within a limited amount of time. In tackling the issues above, we employed a three-pronged approach:
 
 \begin{itemize}
-  \item Using Q-learning, a reinforcement learning algorithm, to train our agent to play with the best possible strategy. (Section 3.1)
-  \item Reduce the overall state size, by grouping similar states together. (Section 3.1, Abstraction of States)
-  \item Precomputing the estimated strength of hand ranks, storing them in look-up tables to allow for retrieval in constant time. (Section 3.3)
+  \item Using Q-Learning, a reinforcement learning algorithm, to train our agent to play with the best possible strategy. (Section 3.1)
+  \item Reducing the overall state size, by grouping similar states together. (Section 3.1, Clustering)
+  \item Precomputing the estimated strength of hand ranks, storing them in look-up tables to allow for retrieval in linear time. (Section 3.3)
  \end{itemize}
 
-The following two sections will explain our agent’s strategy within each betting round, namely the pre-flop and post-flop round.
+The following two sections explain our agent’s strategy within preflop and postflop streets.
+
 \section{Preflop Street}
 
 In order to decide what action the agent would take based only on the limited amount of information it has during the preflop street, we introduce the use of hand strength ($HS$), which is an estimate determined by the probability of winning with the two hole cards currently in the agent’s hand.
@@ -93,7 +95,7 @@ We then calculate $HS$ using the formula:
 \begin{displaymath}
  HS = Pr(Win)= \frac{\# \text{ } of \text{ } wins}{Total \text{ }games \text{ } played}
 \end{displaymath}
-Where the total games played is fixed at 10,000. The results of the Monte Carlo simulation are seen in Figure \ref{fig:1}.
+where the total games played is fixed at 10,000. The results of the Monte Carlo simulation are seen in Figure \ref{fig:1}.
 \begin{figure}
   \includegraphics[width=\linewidth]{WinningProb.PNG}
   \caption{Estimated winning probabilities with starting hands}
@@ -112,14 +114,15 @@ At every preflop street, the agent chooses an action [fold, call, raise] to take
   \end{array}
   \right\rbrace \quad \text{where } 0 < j < k \leq 1
 \end{displaymath}
-Where $j$ and $k$ are pre-determined thresholds set for the agent.
+where $j$ and $k$ are pre-determined thresholds set for the agent.
 
 \section{Postflop Streets}
-The postflop streets consist of Flop, Turn and River. As compared to preflop street, at least three community cards are revealed, giving us more information to work with. During the postflop rounds, reinforcement learning is employed. Specifically, we use a modified version of Q-learning to train our agent.
 
-\subsection{Q-learning}
+The postflop streets consist of the Flop, Turn and River streets. In contrast to the preflop street, at least three community cards are revealed during the postflop streets, giving us more information to work with. Here, reinforcement learning is employed. Specifically, we use a modified version of the Q-Learning algorithm to train our agent.
 
-In Q-learning, we maintain a table of states and actions as input for the agent. Each state has a Q-value that corresponds to each action. An illustration of it can be seen in Table 1.
+\subsection{Q-Learning}
+
+As per the Q-Learning algorithm, we maintain a table of states and actions as an input to the agent. Each state has a Q-Value for each action (Fold, Call or Raise), signifying the expected reward for the action. An illustration of the Q-Learning table can be seen in Table 1.
 
 \begin{table}[h!]
   \begin{center}
@@ -136,11 +139,11 @@ In Q-learning, we maintain a table of states and actions as input for the agent.
 	S\\
 	\hline
 	\end{tabular}
-	\caption{Q-learning Training}
+	\caption{Q-Learning Table}
     \label{tab:table1}
   \end{center}
 \end{table}
-The reward function is determined based on the pot size at the end of the game, as seen in the formula below:
+The reward function is determined based on the pot size $P$ - the total amount that has been bet by both players - at the end of the game, as seen in the formula below:
 \begin{displaymath}
   R_t=
   \left\lbrace
@@ -151,15 +154,25 @@ The reward function is determined based on the pot size at the end of the game, 
   \end{array}
   \right.
 \end{displaymath}
-\noindent Where $P$ is the pot size at the end of the game.
 
-After each training round, the Q-value of each state is obtained by summing up the previous Q-value and the reward function for that round. More formally,
+After each training round, the Q-Value of each state is obtained by summing up the previous Q-Value for that state and the reward function for that round. More formally,
 \begin{displaymath}
-Q\left(s',a'\right)=Q\left(s,a\right)+\sum_{0}^{t}\lambda^{t}R_t\left(s,a\right)
+Q\left(s',a'\right)=(1-l)Q\left(s,a\right)+l\lambda^{t}R\left(s,a\right)
 \end{displaymath}
-\noindent Where $t$ is the number of turns between the current move and the terminal node, $R_t$ is the reward for round $t$, $\lambda$ is the discount factor, $s$ is the state, $a$ is the action and $P$ is the pot size.
+\noindent where
+
+\begin{description}[style=multiline,leftmargin=10mm]
+\item [\emph{t}]refers to the number of turns between the current move and the terminal node.
+\item [\emph{l}]refers to the learning factor.
+\item [\emph{R}]refers to the reward for that round.
+\item [\emph{$\lambda$}]refers to the discount factor.
+\item [\emph{s}]refers to the state of the agent.
+\item [\emph{a}]refers to the action taken by the agent.
+\item [\emph{P}]refers to the pot size.
+\end{description}
 
 \subsubsection{Experience Replay}
+
 Additionally, we apply the technique of experience replay to achieve more efficient use of previous experiences. We store the agent's experiences based on the formula
 \begin{displaymath}
 e_t=\left(s_t,a_t,R_t,s_{t+1}\right)
@@ -168,34 +181,32 @@ The agent stores the data it discovers for each round in a table, and reinforcem
 
 \subsubsection{$\epsilon$-Greedy Algorithm}
 
-At every turn, with a probability of $\epsilon$, a random action is chosen to be performed, otherwise an action with the best expected reward is chosen.
+At every turn, with a probability of $\epsilon$, a random action is chosen to be performed, otherwise an action with the best expected reward (highest Q-Value) is chosen.
 
-The value of $\epsilon$ will slowly decrease as the agent acquires more training. A relatively large initial value ensures that all possible paths will be explored before the agent settles into a sub-optimal pattern. The $i$-th $State$ and possible $Actions$ for the $\epsilon$-Greedy Algorithm is
+The value of $\epsilon$ will slowly decrease as the agent acquires more training. A relatively large initial value ensures that all possible paths will be explored, to avoid the scenario where the agent settles into a sub-optimal pattern of calling the same action repeatedly. At every street, the state of the agent is determined by the following attributes:
 \begin{displaymath}
 State_i = \{ EHS_i \text{, } S_i \text{, }P_i\text{, }\#OR_i\text{, }\#SR_i\text{, }OPS_i\}
 \end{displaymath}
-\begin{displaymath}
-Actions = \{ fold\text{, }call\text{, }raise \}
-\end{displaymath}
-Where
+where
 
 \begin{description}[style=multiline,leftmargin=10mm]
-\item [\emph{EHS}]refers to the current Expected Hand Strength of a given player. More details can be found in Section 3.2.
-\item [\emph{S}]refers to the current Street that the game is in, which is the start of each new round.
-\item [\emph{P}]refers to the Pot Size, which is the total amount in the player's bet.
-\item [\emph{\#OR}]refers to the number of Opponent Raises per street.
-\item [\emph{\#SR}]refers to the number of Self Raises per street.
-\item [\emph{OPS}]refers to the Opponent Playing Style.
+\item [\emph{EHS}]refers to the agent's current Expected Hand Strength. More details can be found in Section 3.2.
+\item [\emph{S}]refers to the current street of the round.
+\item [\emph{P}]refers to the pot size.
+\item [\emph{\#OR}]refers to the number of raises the opponent has made in the round so far.
+\item [\emph{\#SR}]refers to the number of raises the agent has made in the round so far.
+\item [\emph{OPS}]refers to the Opponent Playing Style. More details can be found in Section 3.4.
 \end{description}
 
-\subsubsection{Abstraction of States}
-Without abstracting the states into groups, the total size of the state space will be very large and it would be infeasible to calculate all possible states. Therefore, we can apply abstraction by grouping some of the features in increments.
+\subsubsection{Clustering}
+
+Using clustering to group information into buckets would reduce the massive state space, making it much more feasible to explore all possible states. We apply clustering to group the information for our Q-Learning algorithm as such:
 \begin{itemize}
-  \item $EHS$ is grouped in increments of 0.01, from 0 to 1.
-  \item There are three streets - Flop, Turn and River.
-  \item $P$ in a game ranges from \$0 to \$680, but by grouping it in increments of \$40, which is the 2 times big blind amount, since every raise (big blind amount - \$20) must minimally be matched by the opponent, we get a range of 0 to 17.
-  \item $\#OR$ is grouped into five different groups, i.e. from 0 to 4.
-  \item $\#SR$ is grouped into five different groups, i.e. from 0 to 4.
+  \item $EHS$ is divided into groups with an increment of 0.01, from 0 to 1.
+  \item $S$ represents the three postflop streets - Flop, Turn and River.
+  \item $P$ ranges from \$0 to \$680 per game. We group it into increments of \$40, which is the 2 times the big blind amount, since every raise (big blind amount - \$20) must minimally be matched by the opponent. We get a range of 0 to 17.
+  \item $\#OR$ simply ranges from 0 to 4.
+  \item $\#SR$ simply ranges from 0 to 4.
   \item $OPS$ is grouped into four categories. More details can be found in Section 3.4.
 \end{itemize}
 
@@ -204,22 +215,22 @@ These groupings help to reduce the complexity and cut down the size of the total
 
 \subsection{Expected Hand Strength}
 
-The Expected Hand Strength, $EHS$, is the probability of the current hand of a given player winning if the game reaches a showdown. It factors in all possible combinations of what the opponent's hand could be and the remaining hidden board cards, and compares each of these hands to the agent's hand, to see which is better. The $EHS$ of the agent's hand is then calculated, by finding the number of times that particular hand turns out to be better than the opponent's. We do this by comparing the number of times which the agent had a better hand, to the total number of comparisons. More formally,
+The Expected Hand Strength, $EHS$, is the probability that a given player's current hand wins if the game reaches a showdown. It factors in all possible combinations for the opponent's hand and the remaining unrevealed board cards, and compares each of these hands to the agent's hand to determine which hand wins. The $EHS$ of the agent's hand is calculated by finding the total number of times the agent's hand wins against the opponent's, out of all possible comparisons. More formally,
 \begin{displaymath}
   EHS(h)= \frac{Ahead(h)+\frac{Tied(h)}{2}}{Ahead(h) + Tied(h) + Behind(h)}
 \end{displaymath}
 
-\noindent Where $Ahead$, $Tied$, and $Behind$ functions determine respectively the number of times the player's hand wins, ties or loses the game. The above formula used to derive the $EHS$ was referenced from Teofilo \textit{et al.}~\shortcite{trc:hs}. 
+\noindent where the $Ahead$, $Tied$, and $Behind$ functions respectively determine the number of times the given player's hand wins, ties or loses against its opponent's. The above formula used to derive the $EHS$ was referenced from Teofilo \textit{et al.}~\shortcite{trc:hs}. 
 
-Note that the $EHS$ may be used at any round of the game. However, the time required to compute an accurate EHS exceeds the time constraint of 0.2s set by the project guidelines, as the number of iterations needed to compute it for a single hand at the pre-flop street is very high. This issue is addressed by using the Average Rank Strength technique which is explained in the next section.
+Note that the $EHS$ may be required by the agent at any street of any round. However, the time required to accurately compute $EHS$ based on large samples may exceed our time constraint of 200 milliseconds. This issue can be addressed by using a lookup table, which is explained in the next section.
 
-\subsection{EHS Look-up Table}
+\subsection{\textbf{\textit{EHS}} Lookup Table}
 
-We devised a technique similar to Average Rank Strength ($ARS$) ~\cite{trc:ars} to improve the efficiency of $EHS$. In our method, three look-up tables are created - one for Flop, one for Turn and one for River. These tables consist of precomputed $EHS$ values for all possible scores. The score value for a particular set of cards refers to the strength of the current hand ranking, and is computed using PyPokerEngine's built-in $HandEvaluator.eval()$ function. For example, given some combination of hole cards and community cards which contain a Pair ranking, $HandEvaluator.eval()$ returns a numeric representation of this hand ranking, which would be lower than if there were a Three-of-a-Kind ranking. 
+We introduce a technique similar to the Average Rank Strength ($ARS$) heuristic~\cite{trc:ars} to improve the efficiency of $EHS$. In our method, three look-up tables are created - one for Flop, one for Turn and one for River. These tables consist of precomputed $EHS$ values for all possible hand scores. The score of a particular hand refers to its strength, and is computed by PyPokerEngine's built-in $HandEvaluator.eval\_hand()$ function. For example, $HandEvaluator.eval\_hand()$ returns a numeric representation of the agent's hand score given some combination of hole cards and community cards which contain a Pair, which would be lower than if there were a Three-of-a-Kind. More details can be found in the PyPokerEngine repository.
 
-Instead of computing $EHS$ during gameplay, the agent can now simply refer to the look-up table, based on its current score, to obtain its $EHS$. This technique runs in constant time, and responds 1000 times faster with negligible error~\cite{trc:ars}.
+Instead of computing $EHS$ during gameplay, the agent now refers to the lookup table, to obtain its $EHS$ based on its current hand score. The use of this technique allows the computation to run in linear time, and results in an approximate thousand-fold improvement in response time, while compromising negligibly on accuracy~\cite{trc:ars}.
 
-To estimate the $EHS$ for the three post-flop streets, we simulated 2.5 million rounds each. Additionally, for each round of simulation, we ran the Monte Carlo sampling algorithm 500 times to obtain the $EHS$. The results are displayed below:
+To enumerate the $EHS$ table for the three postflop streets, for each street we performed a Monte Carlo simulation of 2.5 million samples of the agent's hand and the revealed community cards, also calculating the agent's hand score for each sample. Additionally, for each sample, we performed another simulation of 500 samples of the opponent's hand and the unrevealed community cards (if any) to calculate the $EHS$ for the hand score. The results are displayed below:
 
 \begin{table}[h!]
   \begin{center}
@@ -230,16 +241,16 @@ To estimate the $EHS$ for the three post-flop streets, we simulated 2.5 million 
       Turn & 13,408 \\
       River & 17,470 \\
     \end{tabular}
-    \caption{Result of $EHS$ Look-up Tables Simulation}
+    \caption{Results of $EHS$ Lookup Table Simulation}
     \label{tab:table2}
   \end{center}
 \end{table}
 
-\noindent We are aware that not all possible scores may have been captured in the tables generated during the 2.5 million rounds. However, despite this, the results from simulating 100,000 games show that approximately 99.87 percent of the scores can be found in the table. This goes to show that our three look-up tables are highly reliable.
+\noindent We are aware that not all possible hand scores may appear in the tables generated during the simulation. However, our results from simulating 100,000 games reveal that approximately 99.87 percent of all hand scores can be found in each table, showing that the lookup tables remarkably maintain a high degree of reliability and accuracy. In the case where an agent looks up a hand score that is not enumerated in the lookup table, we perform a limited Monte Carlo simulation of 100 samples for that particular hand score and add it to the lookup table.
 
 \subsection{Opponent Playing Styles}
 
-According to Rupeneite~\shortcite{rupeneite:Reinforcement}, the playing style of an opponent can be classified into four categories. Each style is distinct, in that it describes the opponent's frequency of play and how the player bets. The four categories of playing styles are Loose/Passive, Loose/Aggressive, Tight/Passive and Tight/Aggressive. A brief description of each style is shown in Table 3 below:
+The playing style of an opponent can be classified into four categories~\cite{rupeneite:Reinforcement}. Each style distinctly describes the opponent's frequency of play and style of betting. The four categories of playing styles are Loose/Passive, Loose/Aggressive, Tight/Passive and Tight/Aggressive. A brief description of each style is given in Table 3 below.
 
 \begin{table}[h!]
   \begin{center}
@@ -251,7 +262,7 @@ According to Rupeneite~\shortcite{rupeneite:Reinforcement}, the playing style of
       \hline
       Loose & Plays multiple and varied hands.  \\
       \hline
-      Aggressive &  Bets and raises a lot, almost always never checking or call. \\
+      Aggressive & Bets and raises a lot, almost always never checking or call. \\
       \hline
       Passive & Usually checks and call, unlikely to take the lead. \\
       \hline
@@ -260,27 +271,28 @@ According to Rupeneite~\shortcite{rupeneite:Reinforcement}, the playing style of
     \label{tab:table3}
   \end{center}
 \end{table}
-The Aggressive Factor, $AF$, is used to classify a player as either Aggressive or Passive. The formula for $AF$ is as follows:
+
+Aggressiveness Factor, $AF$, is the ratio of a given player's number of raises to the number of calls. More formally:
 \begin{displaymath}
   AF = \frac{\text{\# }raises}{\text{\# }calls}
 \end{displaymath}
-\noindent Players can be classified into either Aggressive or Passive by the percentage of games they have played. Based on research by Rupeneite~\shortcite{rupeneite:Reinforcement}, a threshold of 1 is used:
+\noindent Players are classified as either Aggressive or Passive based on their Aggressiveness Factor. Based on research by Rupeneite~\shortcite{rupeneite:Reinforcement}, a threshold of 1 is used:
 \begin{itemize}
 	\item Aggressive if $AF > 1$
 	\item Passive if $AF \leq 1$
 \end{itemize}
 
-The Player Tightness, $PT$, is used to classify a player as either Loose or Tight. The formula for $PT$ is as follows:
+Player Tightness, $PT$, is the ratio of a given player's number of folds to the total number of games. More formally:
 \begin{displaymath}
   PT =  \frac{\text{\# }folds}{\text{\# }games} 
 \end{displaymath}
-\noindent Players can be classified into either Loose or Tight by the percentage of games they have played. Based on research by Rupeneite~\shortcite{rupeneite:Reinforcement}, a threshold of 0.28 is used:
+\noindent Players are classified as either Loose or Tight based on their Player Tightness. Based on research by Rupeneite~\shortcite{rupeneite:Reinforcement}, a threshold of 0.28 is used:
 \begin{itemize}
-	\item Tight if $PT < 0.28$ hands
-	\item Loose if $PT \geq 0.28$ hands
+	\item Tight if $PT < 0.28$
+	\item Loose if $PT \geq 0.28$
 \end{itemize}
 
-Later, a classification process, introduced by Dinis and Reis~\shortcite{dinis-reis:modeling}, is conducted to classify the opponent's style of play into four categories, as seen in Table 4.
+Later, a classification process, introduced by Dinis and Reis~\shortcite{dinis-reis:modeling}, combined these two heuristics to classify the opponent's style of play into four categories, as seen in Table 4.
 
 \begin{table}[h!]
   \begin{center}
@@ -296,11 +308,60 @@ Later, a classification process, introduced by Dinis and Reis~\shortcite{dinis-r
   \end{center}
 \end{table}
 
-\section{Limitations}
+\section{Analysis}
 
-In theory, our method should work. However, due to the lack of time, our agent did not have sufficient training and therefore the Q-values do not converge. This has resulted in the agent unable to take the best decision based on its current state. Currently, our agent
+After several rounds of preliminary testing, we realized that the state space was still too large for the agent to be meaningfully trained with our resources. The following analysis was conducted with a limited set of features: Street, EHS, Pot, Action, which allowed us to generate tangible results within several hours of training.
 
-2. A lot of hands mapped to the same EHS, so trying to play the same way is flawed.
+\subsection{Training and Results}
+
+Our poker agent was training with static agents, as detailed in Table 5.
+
+\begin{table}[H]
+  \begin{center}
+    \begin{tabular}{|l|p{5cm}|}
+    \hline
+      \textbf{Agent} & \textbf{Description} \\
+      \hline
+      RandomPlayer & Chooses an action randomly. \\
+      \hline
+      RaisePlayer & Always raises.  \\
+      \hline
+      HonestPlayer & Raises on a good hand, calls on a decent hand, folds on a bad hand. \\
+      \hline
+    \end{tabular}
+    \caption{Static Agents used for Training}
+    \label{tab:table5}
+  \end{center}
+\end{table}
+
+Early iterations of our agent performed rather well against Random and Raise but lost to HonestPlayer by a small margin.
+The average winnings per round were determined to be:
+
+\begin{itemize}
+	\item Against RandomPlayer: 2.107 big blinds per round
+	\item Against RaisePlayer: 0.4758 big blinds per round
+	\item Against HonestPlayer: -0.1421 big blinds per round
+\end{itemize}
+
+Later iterations of our agent performed better; although our agent was still losing to HonestPlayer, it lost by an even smaller margin of 0.11 big blinds per round.
+
+\subsection{Limitations}
+
+\subsubsection{Loss of Information from Clustering of \textbf{\textit{EHS}}}
+
+Clustering of the $EHS$ in by divisions of 0.01 was used with the intent of reducing the size of the state space. This results in different combinations of cards with similar $EHS$ sharing the same state bucket. However, the action that the agent takes may also be dependent on its current combination of cards. Hence, information is lost from when we differentiate different combinations of cards merely by their $EHS$. Further work can be done to improve the decision process, such as by reducing the size of the buckets, or further classifying card combinations through the use of other heuristics such as the rank of the hand (High Card, Pair, Straight, Flush, etc.) or Hand Potential~\cite{trc:hs}.
+
+\subsubsection{Non-Convergent Q-Values}
+
+The use of the $\epsilon$-Greedy algorithm determines that every turn, there is a probability of $\epsilon$ that a random action is chosen, else the action with the highest Q-Value (best expected reward) is chosen. Ideally, reducing the value of $\epsilon$ after every game would cause the Q-Values of each state to converge, which would allow the agent to more reliably choose the best action at every state. Due to the time constraints of the project, we did not manage to derive a reliable formula for varying the value of $\epsilon$. Our results show that our Q-Values did not converge after approximately 700,000 games with $\epsilon$ = 0.15 and $l$ = 0.02. However, this could also be due to the fact that we did not have a large enough number of rounds for the Q-Values to converge, or that our clustering method needs to be improved to more accurately group the Q-Values.
+
+\subsubsection{Lack of Diversity in Training Opponents}
+
+The selection of opponents is an important factor in determining the type of agent we produce. For instance, training against an opponent who randomly selects actions will result in a greater probability of our agent selecting calls and raises, since the opponent has a substantial probability to fold throughout the round. Hence, training against opponents with different playstyles will produce a different set of biases for each opponent. We conclude that games against these static opponents would only be useful for initial training, and further generations should be trained by playing against itself. Further research can consider exploring a greater variety of opponent profiles to train the agent against.
+
+\section{Conclusions}
+
+There are still improvements that can be made to our agent for it to more effectively excel at Poker. While our research has resulted in a successful attempt at designing an agent with vast improvements to its decision time, better opponent modelling techniques and training methods can improve the overall competency of our agent.
 
 \iffalse
 \section{Hand Potential}
@@ -352,6 +413,7 @@ The algorithm for Hand Potential is described in detail via pseudo-code in Algor
   \end{algorithm}
 
 \section{Effective Hand Strength}
+
 The probability of winning, $Pr(Win)$, can be calculated as:
 \begin{displaymath}
   Pr(Win) = HS * (1-NPot) + (1-HS) * PPot
@@ -360,6 +422,10 @@ To calculate $EHS$, we set $NPot=0$ since we want the probability of the hand be
 \begin{displaymath}
   EHS = HS +(1-HS) * PPot
 \end{displaymath}
+
+\subsubsection{Counterfactual Regret Minimisation}
+
+Counterfactual Regret Minimisation (CFR) is another reinforcement learning algorithm that we could have used while implementing our poker agent. This is an algorithm that seeks to minimise regret about its decisions at each step of a game. There are two types of regret - positive and negative regret. Negative regret refers to the regret of having taken a particular action in a particular situation. It means the agent would have done better had it not chosen this action in this situation. Positive regret is mechanism by which the agent tracks actions that resulted in a positive outcome. Unlike Q-Learning, which remembers the reward received for every action and chooses the action with the highest reward, CFR remembers the regret for every action and favours the action it regretted not having taken previously. However, CFR assumes that a terminal state is eventually reached and performs updates only after this occurs, which is not a requirement for traditional algorithms like Q-Learning.
 
 \subsection{Word Processing Software}
 
@@ -553,4 +619,3 @@ present document and may serve as a formatting sample.
 \bibliography{reportLatest}
 
 \end{document}
-
